@@ -1,0 +1,33 @@
+name: Build today's stats
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  develop_update:
+    runs-on: ubuntu-latest
+
+    if: github.repository == 'qmk/qmk_stats'
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Checkout main
+      run: |
+        git fetch origin master main
+        git checkout main
+
+    - name: Run the report
+      run: |
+        ./generate.py
+
+    - name: Commit and push the new report
+      run: |
+        git config --global user.name "QMK Bot"
+        git config --global user.email "hello@qmk.fm"
+        git add report _summary.md
+        git commit -m'new report'
+        git push origin main
