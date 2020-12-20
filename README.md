@@ -1,2 +1,3 @@
-# qmk_stats
-Stats about how people use QMK
+# QMK Statistics
+
+Statistics about how people use QMK.
