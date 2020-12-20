@@ -8,7 +8,7 @@ This chart shows all keyboards that were compiled today.
 
 <img src="reports/20201220/keyboards.svg">
 
-Raw data: [JSON](reports/20201220/keyboards.json)
+Raw data: [JSON](keyboards.json)
 
 # Locations
 
@@ -16,5 +16,5 @@ This chart shows where users using QMK Configurator came from today.
 
 <img src="reports/20201220/locations.svg">
 
-Raw data: [JSON](reports/20201220/locations.json)
+Raw data: [JSON](locations.json)
     
