@@ -9,7 +9,7 @@ import requests
 from matplotlib.pyplot import legend, subplots
 
 
-BASE_URL = environ.get('BASE_URL', 'http://localhost:5000/api/v1/metrics/')
+BASE_URL = environ.get('BASE_URL', 'https://api.qmk.fm/v1/metrics/')
 
 
 def get_metric_label(metric_name):
@@ -32,11 +32,11 @@ def generate_pie_chart(data, filename):
 
     # Plot the data
     fig1, ax1 = subplots()
-    wedges, labels, fractions = ax1.pie(sizes, labeldistance=1.01, startangle=90, counterclock=False, autopct='%1.1f%%', pctdistance=0.87, rotatelabels=True, textprops={'fontsize': 'xx-small'})
+    wedges, labels, fractions = ax1.pie(sizes, labeldistance=1.01, startangle=90, counterclock=False, autopct='%1.1f%%', pctdistance=0.87, rotatelabels=True, textprops={'fontsize': 'xx-small'}, normalize=True)
     ax1.axis('equal')
 
     # Add a legend
-    fig1.legend(wedges, text_labels, loc="center right", ncol=2, fontsize='xx-small', bbox_to_anchor=(1.35,0.5), title='Starts At Top Center')
+    fig1.legend(wedges, text_labels, loc="center right", ncol=2, fontsize='xx-small', bbox_to_anchor=(1.4,0.5), title='Starts At Top Center')
 
     # Rotate the fraction labels to match the keyboard name
     for i in range(len(labels)):
@@ -85,13 +85,17 @@ This page shows usage of the QMK Configurator for the 24 hour period ending {ful
 
 This chart shows all keyboards that were compiled today.
 
-<img src="/reports/{file_date}/keyboards.svg">
+<img src="reports/{file_date}/keyboards.svg">
+
+Raw data: [JSON]({report_dir}/keyboards.json)
 
 # Locations
 
 This chart shows where users using QMK Configurator came from today.
 
-<img src="/reports/{file_date}/locations.svg">
+<img src="{report_dir}/locations.svg">
+
+Raw data: [JSON]({report_dir}/locations.json)
     """
     (report_dir / 'index.md').write_text(index_md)
 
@@ -99,6 +103,6 @@ This chart shows where users using QMK Configurator came from today.
     sidebar = ["* Reports"]
     for dir in Path('reports').iterdir():
         if dir.is_dir:
-            sidebar.append(f'    * [{dir}](/{dir}/index.md)')
+            sidebar.append(f'    * [{dir.name}]({dir}/index.md)')
 
     Path('_summary.md').write_text('\n'.join(sidebar))
