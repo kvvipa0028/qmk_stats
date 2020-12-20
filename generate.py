@@ -88,8 +88,7 @@ if __name__ == '__main__':
         report_dir.mkdir()
 
     # Write out the raw data and the pie charts
-    #for category in ('keyboards', 'locations'):
-    for category in ('keyboards',):
+    for category in ('keyboards', 'locations'):
         data = fetch_metrics(category)
         category_json = report_dir / f'{category}.json'
         json.dump(data, category_json.open('w'))
