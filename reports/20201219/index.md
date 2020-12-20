@@ -6,11 +6,11 @@ This page shows usage of the QMK Configurator for the 24 hour period ending 2020
 
 This chart shows all keyboards that were compiled today.
 
-<img src="/reports/20201219/keyboards.svg">
+<img src="reports/20201219/keyboards.svg">
 
 # Locations
 
 This chart shows where users using QMK Configurator came from today.
 
-<img src="/reports/20201219/locations.svg">
+<img src="reports/20201219/locations.svg">
     
