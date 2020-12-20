@@ -85,9 +85,9 @@ This page shows usage of the QMK Configurator for the 24 hour period ending {ful
 
 This chart shows all keyboards that were compiled today.
 
-<img src="reports/{file_date}/keyboards.svg">
+<img src="{report_dir}/keyboards.svg">
 
-Raw data: [JSON](keyboards.json)
+Raw data: [JSON]({report_dir}/keyboards.json ':ignore')
 
 # Locations
 
@@ -95,7 +95,7 @@ This chart shows where users using QMK Configurator came from today.
 
 <img src="{report_dir}/locations.svg">
 
-Raw data: [JSON](locations.json)
+Raw data: [JSON]({report_dir}/locations.json ':ignore')
     """
     (report_dir / 'index.md').write_text(index_md)
 
