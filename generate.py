@@ -6,10 +6,16 @@ from os import environ
 from time import strftime
 
 import requests
-from matplotlib.pyplot import legend, subplots
+from matplotlib.pyplot import barh, legend, subplots
+from matplotlib.ticker import StrMethodFormatter
+import matplotlib.pyplot as plt
 
 
 BASE_URL = environ.get('BASE_URL', 'https://api.qmk.fm/v1/metrics/')
+file_date = strftime('%Y%m%d')
+title_date = strftime('%Y %b %d')
+full_datetime = strftime('%Y %b %d %H:%M:%S %z')
+report_dir = Path('reports') / file_date
 
 
 def get_metric_label(metric_name):
@@ -23,58 +29,74 @@ def get_metric_label(metric_name):
     return keyboard
 
 
-def generate_pie_chart(data, filename):
-    """Generates a pie chart from data.
+def prepare_data(data, percent=False):
+    """Massage data into a format that matplot likes
     """
-    text_labels = [f'{get_metric_label(l)}:{data[l]}' for l in sorted(data)]
-    total = sum(data.values())
-    sizes = [(data[i] / total) for i in sorted(data)]
+    labels = [f'{get_metric_label(l)}:{data[l]}' for l in sorted(data, key=data.get)]
+    sizes = list(sorted(data.values()))
 
-    # Plot the data
-    fig1, ax1 = subplots()
-    wedges, labels, fractions = ax1.pie(sizes, labeldistance=1.01, startangle=90, counterclock=False, autopct='%1.1f%%', pctdistance=0.87, rotatelabels=True, textprops={'fontsize': 'xx-small'}, normalize=True)
-    ax1.axis('equal')
+    return labels, sizes
 
-    # Add a legend
-    fig1.legend(wedges, text_labels, loc="center right", ncol=2, fontsize='xx-small', bbox_to_anchor=(1.4,0.5), title='Starts At Top Center')
 
-    # Rotate the fraction labels to match the keyboard name
-    for i in range(len(labels)):
-        fractions[i].set_rotation(labels[i].get_rotation())
+def generate_horizontal_bar_chart(text_labels, sizes, filename):
+    """Generate a horizontal bar chart from data.
+    """
+    height = len(text_labels) * .25
+    y_pos = list(range(len(text_labels)))
 
-    # Save the file
-    fig1.savefig(filename, bbox_inches='tight')
+    plt.figure(figsize=(8, height))
+    plt.autoscale(enable=True, axis='y', tight=True)
+    bar_graph = plt.barh(y=y_pos, width=sizes, tick_label=text_labels)
+    plt.savefig(filename, bbox_inches='tight')
 
 
 def fetch_metrics(category):
-    """Fetches a set of metrics from the API.
+    """Fetches a set of metrics from the API or disk.
     """
+    category_json = report_dir / f'{category}.json'
+
+    if category_json.exists():
+        # Return metrics from disk
+        print('Report data already found on disk, re-generating report.')
+        return read_metrics(category_json)
+
+    # Fetch metrics from API
     url = BASE_URL + category
     data = requests.get(url).json()
 
     if category in data:
+        write_metrics(data[category], category_json)
         return data[category]
 
     return data
 
 
-if __name__ == '__main__':
-    file_date = strftime('%Y%m%d')
-    title_date = strftime('%Y %b %d')
-    full_datetime = strftime('%Y %b %d %H:%M:%S %z')
-    report_dir = Path('reports') / file_date
+def read_metrics(category_json):
+    """Read the metrics from disk.
+    """
+    return json.load(category_json.open('r'))
 
+
+def write_metrics(data, category_json):
+    """Writes the metrics to disk.
+    """
+    return json.dump(data, category_json.open('w'))
+
+
+if __name__ == '__main__':
     if not report_dir.exists():
         report_dir.mkdir()
 
     # Write out the raw data and the pie charts
-    for category in 'keyboards', 'locations':
+    #for category in ('keyboards', 'locations'):
+    for category in ('keyboards',):
         data = fetch_metrics(category)
         category_json = report_dir / f'{category}.json'
         json.dump(data, category_json.open('w'))
 
         if data:
-            generate_pie_chart(data, f'{report_dir}/{category}.svg')
+            text_labels, sizes = prepare_data(data)
+            generate_horizontal_bar_chart(text_labels, sizes, f'{report_dir}/{category}.svg')
 
     # Write the report md
     index_md = f"""# QMK Statistics For {title_date}
