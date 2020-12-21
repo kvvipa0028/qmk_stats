@@ -2,7 +2,7 @@ name: Build today's stats
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '1 5 * * *'
 
 jobs:
   develop_update:
