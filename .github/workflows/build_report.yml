@@ -30,6 +30,6 @@ jobs:
       run: |
         git config --global user.name "QMK Bot"
         git config --global user.email "hello@qmk.fm"
-        git add report _summary.md
+        git add reports _summary.md
         git commit -m'new report'
         git push origin main
