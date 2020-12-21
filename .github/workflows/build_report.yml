@@ -1,8 +1,9 @@
 name: Build today's stats
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '1 5 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   develop_update:
