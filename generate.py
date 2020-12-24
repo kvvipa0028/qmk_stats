@@ -121,9 +121,11 @@ Raw data: [JSON]({report_dir}/locations.json ':ignore')
     (report_dir / 'index.md').write_text(index_md)
 
     # Update the sidebar
-    sidebar = ["* Reports"]
+    sidebar = []
     for dir in Path('reports').iterdir():
         if dir.is_dir:
             sidebar.append(f'    * [{dir.name}]({dir}/index.md)')
+
+    sidebar = ["* Reports", *sorted(sidebar)]
 
     Path('_summary.md').write_text('\n'.join(sidebar))
