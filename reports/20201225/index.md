@@ -2,7 +2,7 @@
 
 This page shows usage of the QMK Configurator for the 24 hour period ending 2020 Dec 25 00:36:05 +0000.
 
-# Keyboaard Cloud
+# Keyboard Cloud
 
 This is today's Keyboard Cloud.
 

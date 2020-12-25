@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
 This page shows usage of the QMK Configurator for the 24 hour period ending {full_datetime}.
 
-# Keyboaard Cloud
+# Keyboard Cloud
 
 This is today's Keyboard Cloud.
 
