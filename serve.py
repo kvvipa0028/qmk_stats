@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Serve this site locally.
 """
 import http.server
