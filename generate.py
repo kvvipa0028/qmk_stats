@@ -22,7 +22,7 @@ if len(sys.argv) > 1:
     year = int(file_date[:4])
     month = int(file_date[4:6])
     day = int(file_date[4:8])
-    report_time = strptime('20201222', '%Y%m%d')
+    report_time = strptime(file_date, '%Y%m%d')
 else:
     report_time = gmtime()
 
@@ -144,6 +144,18 @@ if __name__ == '__main__':
         index_md = f"""# QMK Statistics For {title_date}
 
 This page shows usage of the QMK Configurator for the 24 hour period ending {full_datetime}.
+
+# Keyboaard Cloud
+
+This is today's Keyboard Cloud.
+
+<img src="{report_dir}/keyboards_wordcloud.png">
+
+# Location Cloud
+
+This is today's Location Cloud.
+
+<img src="{report_dir}/locations_wordcloud.png">
 
 # Keyboard Compiles
 
