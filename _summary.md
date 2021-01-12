@@ -21,3 +21,4 @@
     * [20210109](reports/20210109/index.md)
     * [20210110](reports/20210110/index.md)
     * [20210111](reports/20210111/index.md)
+    * [20210112](reports/20210112/index.md)
